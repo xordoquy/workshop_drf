@@ -3,12 +3,6 @@ from django.contrib.auth import get_user_model
 from . import models
 
 
-class Category(serializers.ModelSerializer):
-    class Meta:
-        model = models.Category
-        fields = ('id', 'name')
-
-
 class Task(serializers.ModelSerializer):
 
     owner = serializers.SlugRelatedField(
@@ -22,4 +16,11 @@ class Task(serializers.ModelSerializer):
     class Meta:
         model = models.Task
         fields = ('id', 'name', 'owner', 'categories', 'done')
+
+
+class Category(serializers.ModelSerializer):
+    tasks = Task(many=True, read_only=True)
+    class Meta:
+        model = models.Category
+        fields = ('id', 'name', 'tasks')
 
