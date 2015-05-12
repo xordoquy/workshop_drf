@@ -23,7 +23,7 @@ class Task(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filter_class = filters.Task
 
-    @list_route()
+    @list_route(methods=['get', 'post'])
     def mine(self, request):
         queryset = self.filter_queryset(self.get_queryset().filter(owner=request.user))
 
