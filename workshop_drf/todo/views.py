@@ -1,7 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.filters import DjangoFilterBackend
 from rest_framework.decorators import detail_route, list_route
-from . import serializers, models
+from . import serializers, models, filters
 
 
 class Category(viewsets.ModelViewSet):
@@ -12,13 +13,15 @@ class Category(viewsets.ModelViewSet):
     def mine(self, request, *args, **kwargs):
         category = self.get_object()
         category.my_tasks = category.tasks.filter(owner=request.user)
-        serializer = serializers.MyCategory(category)
+        serializer = serializers.MyCategory(category, context={"request":request})
         return Response(serializer.data)
 
 
 class Task(viewsets.ModelViewSet):
     queryset = models.Task.objects.all()
     serializer_class = serializers.Task
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = filters.Task
 
     @list_route()
     def mine(self, request):
