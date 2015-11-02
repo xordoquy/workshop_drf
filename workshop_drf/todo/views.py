@@ -13,7 +13,9 @@ class Category(viewsets.ModelViewSet):
     def mine(self, request, *args, **kwargs):
         category = self.get_object()
         category.my_tasks = category.tasks.filter(owner=request.user)
-        serializer = serializers.MyCategory(category, context={"request":request})
+        serializer = serializers.MyCategory(
+            category,
+            context={"request": request})
         return Response(serializer.data)
 
 
@@ -25,7 +27,9 @@ class Task(viewsets.ModelViewSet):
 
     @list_route(methods=['get', 'post'])
     def mine(self, request):
-        queryset = self.filter_queryset(self.get_queryset().filter(owner=request.user))
+        queryset = self.filter_queryset(
+            self.get_queryset().filter(
+                owner=request.user))
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -34,5 +38,3 @@ class Task(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-
-
