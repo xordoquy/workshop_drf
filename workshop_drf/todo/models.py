@@ -13,7 +13,7 @@ class Category(models.Model):
 
 
 class Task(models.Model):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL)
     categories = models.ManyToManyField(Category, related_name="tasks")
     done = models.BooleanField(default=False)
