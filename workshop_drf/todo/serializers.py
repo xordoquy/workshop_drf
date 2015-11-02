@@ -4,7 +4,8 @@ from . import models
 
 
 class Task(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField('task-detail', source='id', read_only=True)
+    url = serializers.HyperlinkedIdentityField(
+        'task-detail', source='id', read_only=True)
     owner = serializers.SlugRelatedField(
         slug_field='username',
         queryset=get_user_model().objects.all())
