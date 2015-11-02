@@ -19,7 +19,8 @@ class Task(serializers.ModelSerializer):
 
 
 class Category(serializers.ModelSerializer):
-    tasks = Task(many=True, read_only=True)
+    tasks = Task(many=True)
+
     class Meta:
         model = models.Category
         fields = ('id', 'name', 'tasks')
@@ -27,7 +28,7 @@ class Category(serializers.ModelSerializer):
 
 class MyCategory(serializers.ModelSerializer):
     tasks = Task(many=True, source='my_tasks')
+
     class Meta:
         model = models.Category
         fields = ('id', 'name', 'tasks')
-
